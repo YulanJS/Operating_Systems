@@ -1,0 +1,59 @@
+CS 149 - Notes September 13th & 18, 2017 
+
+Process Concepts (Day II/ Day III):
+
+Fork()–
+
+Current process is cloned to a new process
+	*parent, child are both running
+	*Separate memory space
+	*THe child proc inherits (copies) memory space (text, data, heap, stack) and files from parent. Even the program counter is copied
+		*The PID is different for the child and the parent. 
+	*What happens when the parent returns from the fork? The child process will return from the fork is the return = 0. If return is -1 means the fork is unsuccessful. 
+
+Process Termination–
+
+Exit(): normal termination returns the status from the child to parent
+	Child: exit (1) / exit with states 1/ 
+		*Unblock wait() in parent
+	Parent: pid = wait(&status);
+		*Block until any child proc exit and get child status & pid
+Abort(): abnormal termination
+Kill(): terminate another process
+	Permission: privileged user, or with the same user id.
+	Why parent process terminates children process?
+		*Child exceeds allocated resources 
+		*Task assigned to child no long required 
+		*Cascading termination: the parent is exiting and OS does not allow a child to continue if its parent terminates (initiated by OS) 
+
+**Missed notes because I was playing with iPhone X simulator** GO BACK AND READ NOTES 
+
+
+Exevc(): executes a new program - replacing the calling process with an new process
+	path: full path from the program to be executed
+	argv: the array of arguments for the program to execute 
+		each argument is a null-terminated string
+		the first argument is the name of the program
+		the last entry in argv is null
+	After a successful execv, no return to the calling proc
+	Return -1 only when there is an error (calling proc still alive) 
+
+Look through examples of parents and children 
+
+Sync and Async Message Passing 
+
+Blocking = synchronous
+	-Blocking send: the sender is blocked until a message is received
+	-Blocking receive: the receiver is blocked until a message is available 
+
+Non-blocking = asynchronous 
+	-Non-blocking send: The sender sends the message and continues 
+	-Non-blocking receive: The receiver receives a valid msg of null msg
+
+Different combination possible 
+*I/O operations in OS: synchronous, asynchronous
+
+Rendezvous: 
+Both the send and receive are blocking 
+	Producer-consumer becomes trivial. 
+	We have the producer block sending until the process is done, and the producer block receiving until a message arrives, which is when it will do its process. 

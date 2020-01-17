@@ -1,0 +1,80 @@
+CS149 August 28th, 2017 
+
+Introduction - 
+
+Slides will use abbreviations 
+
+OS: Operating Systems Proc: processApp: application HW: hardware SW: software Mem: memory Addr: addressReq: request mgmt: management Util: utilization FS: file systems Env: environment Msg: message#: number b/w: between w/: with w/o: without Aka: also known as
+
+Operating System—
+
+Operating System makes it so the user doesn’t need to know how to talk to the hardware on the lowest level. It’s an intermediary between the user and the hardware. Allows for complex functions and efficient usage of hardware. User will never make direct calls to low level hardware. 
+
+Main goal is to keep all users happy. 
+An operating system doesn’t need to have a user interface. They can be embedded computers in devices i.e. automobiles (real time OS). Operating systems will respond to certain events quickly and in a certain time frame. *Not trying to keep all users happy, needs to act much quicker* 
+
+If you want to store a file, run a process, delete a file, communicate… you will use the Operating System. OS will be the resource allocator and control program. 
+
+The OS is known internally as a “kernel” 
+Anything else is a system program or an application program 
+
+I/O Devices —
+
+I/O devices and CPU are allowed to execute at the same time. But they still compete for memory cycles.
+
+If multiple devices need to access the memory with only one bus, there needs to be a system to regulate this. Multiple devices can never access the memory on the same bus at the same time.
+
+{OS – Device Driver} <–> {Device controller – device}
+Provides the middle ground for the OS to be able to use devices without needed to understand how they work. Much more generic commands issued to device drivers. 
+
+A device controller is hardware that is in charge of a specific device. When a device controller is running, it will interrupt the CPU when an I/O operation is complete. 
+
+Interrupts—
+
+Interrupt vector: an array of addresses of all interrupt service routines 
+Interrupt number: index to an interrupt vector
+Trap or Exception: SW-interrupt caused either by an error or a user req
+
+An OS is interrupt driven to ensure it completes task as they finish. 
+
+Interrupts will have priorities of when they are executed 
+
+When an interrupt is received, the OS will preserve the current state, determine the type of interrupt and the interrupt number, invoke the proper interrupt service routine, and the the OS will restore back the state of the CPU and resume where it left off. 
+
+Cache (Hardware not software)—
+
+Copy data temporarily from slower to faster storage 
+Cache and buffer are different names for the same thing
+Cache is smaller than storage because it’s replaced often and is expensive to build. 
+
+Caches have a hierarchy of closeness to the Registers much like the data storage hierarchy. 
+
+Von Neumann Architecture–
+
+There is a CPU and Memory in the device. 
+The Device will have a direct connection to the memory. 
+Direct Memory Access:
+	Used for high speed I/O devices
+	Device controller transfers blocks of data from buffer storage to main memory without CPU
+Downside to a DMA is that data has to be send to the memory before a CPU can start accessing the data from the device. 
+*Data is stored in the local buffer by the devices. This is very wasteful, so DMA is much more useful and efficient.*
+When the devices throws an interrupt, the CPU will then move the data to the memory. 
+
+Computer System Architecture –
+ 
+The memory is attached to multiple processors, each with their own caches and registers
+
+Multiprocessor systems: Parallel, systems, tightly coupled system
+	Main advantage is that more operations can be run in parallel. 
+Two types: 	Asymmetric Multiprocessing(AMP) [All processors can perform all operations] these are good because if a processor is free, it can handle any operation 
+		Symmetric Multiprocessing (SMP) [Certain processors can perform certain operations] slaves will always listen to the master and don’t have to worry about executing different operations.  
+	Multicore per chip 
+
+*IF a cache is changed in one processor, then it must notify other processors to update their caches. This is known as cache coherency.
+
+Operating System Structure –
+
+Multiprogramming: How can we improve resource efficiency? We want to load as many tasks as possible into main memory. Select a job to run until it waits for I/O this is known as Job Scheduling. This way the CPU is busy and we can keep increasing the CPU%
+
+Timesharing: For interactive computers: CPU switch job frequently to keep each interactive user happy. Responses must be very quick < 1ms. Since there are multiple users, there isn’t enough memory which leads to Memory Swapping. Virtual memory will allow partially-loaded programs to execute. 
+ 

@@ -1,0 +1,1 @@
+loopy.d: ../loopy.c

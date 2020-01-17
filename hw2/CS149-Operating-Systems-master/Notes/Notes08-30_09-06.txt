@@ -1,0 +1,128 @@
+CS149 August 30th, 2017 / September 6th, 2017
+
+Chapter 2 - Operating System Structure 
+
+Main lesson of devices: It all depends on the motherboard
+
+OS Dual Mode —
+
+Two modes in an OS; User Mode and Kernel Mode. OS protects itself and others. 
+Non-privileged interactions: executing in bother modes 
+Privileged instructions: executed in kernel mode only. 
+	Any operation with I/O is a privileged instruction. This is because the OS controls all devices connected 
+	A privileged instruction will switch from Kernel Mode to User Mode, since the kernel will only change when it’s done executing a system call
+	A non-privileged instruction for a system call must be user to kernel. 
+System Call: user-> Kernel, kernel-> user Allows for the user to indirectly call privileged instructions. 
+[user mode] User Process executing-> calls system call->> [kernel mode] execute system call->> [user mode] return from system call
+
+Process Management –
+
+A Process is a program in execution, a unit of work within the system
+-Program: A passive entity 
+-Process: An active entity 
+	Process execution: needs resources - CPU, memory, I/O, files, etc.
+	Process termination-> reclaim any usable resources
+• Single threaded process
+	One program counter: location of the next instruction to execute. 
+	Executes instructions sequentially, one at a time, until completion. 
+• Multi-threaded process: 
+	One program counter per thread. (Programs don’t need to be loaded in the same block of memory, the PC will know where to go) 
+A computer is many processes running concurrently running on CPSs
+	-User processes + system processes
+	OS: multiple CPU’s among the processes/threads 
+Process Management Activities:
+	-Process creation, termination, suspend, resume,
+	-Synchronization, communication, deadlock handling
+
+Memory Management –
+
+-Program execution on Von Neumann 
+	All of the instructions: in memory
+	All of the data: in memory 
+-Memory Management
+	Determine what is in the memory, when, and where
+	Optimize the CPU util% and computer response to others. 
+Allocate and deallocate memory when it’s needed. And when do processes need to be moved out and into memory. This keeps track of all activities within the memory.
+
+Storage Management –
+
+*Storage == File System, mass storage, Caching, I/O systems 
+File System
+	Hierarchal structor with directories 
+	Access control decides who can access what in the file system
+Users cannot write on programs, they only have read capabilities. 
+File System management activities
+	Read Write, manipulate, backup files. 
+Mass Storage is nonvolatile and will not remove files when it’s turned off. 
+
+Storage Management
+	Free space management, Storage allocation / deallocation: fragmentation (not done on SSDs) / Disk scheduling
+	Memory management of I/O 
+		Buffering / Caching / Spooling	
+	Drivers for specific hardware devices 
+
+Security and Protection –
+Protection: is access control processes or uses to resources
+Security: System defense against internal and external attacks
+	Authentication: User ID’s / Group ID’s 
+	Authorization: Associate a User ID with files/procs (Think child management 
+	Privilege escalation: Allows user to change to effective ID with more rights 
+		ie. sudo command - gives you all the privilege in the computer 
+
+User Interface –
+Command Line 
+	implemented by the kernel or a system program 
+	Ex. Shells 
+	Takes an input from the suer and then executes it (Can be internal or external) 
+GUI (Invented at Xerox PARC)
+	Mouse, keyboard, monitor 
+	Icons represent files, programs, actions, etc 
+
+System Calls and API –
+
+Application Programming Interface(API)
+	Programming interface to the services provided by the OS.
+	Typically written in a high-level language (C or C++)
+	API’s are easier to use and more portable 
+	Some common APIs: Win32 API: Windows / POSIX API: Unix, Linux, MacOS / Java API: JVM’s 
+
+System Call Parameter Passing 
+	1. Pass parameters in registers 
+	2. Pass a pointer in the register 
+	3. Pass by the stack
+		Caller: push parameters to stack
+		Callee: pop parameters from the stack 
+	
+Monolithic Structure:
+
+All kernel routines are together and can call any 
+A system call interface 
+Pros
+	Shared Kernel space
+	Good Performance
+Cons
+	No information hiding kernel
+	Chaotic
+	Hard to understand and debug 
+
+Microkernel Structure –
+
+Kernel only provides the most essential functionalities 
+OS service ins implemented as user-mode process 
+
+Pros:
+	Easier to extend - add new OS svc process
+	Good portability: kernel is smaller
+	reliable & secure
+Cons:
+	Inefficient: boundary crossing
+	Increased system-function overhead
+
+System Boot
+	The system will start a fixed memory location in firmware ROM. 
+	A bootstrap loader locates the kernel, loads into the memory and starts it
+	OR, it will boot from a location loaded by ROM which loads from a disk
+	-Common Bootstrap loaded, GRUB
+		Allows selection of kernel from multiple disks, version, kernel, options 
+
+

@@ -1,0 +1,82 @@
+CS 149 - Notes September 11th, 2017
+
+Process Concept–
+
+Process (active): entity in memory, a program in execution
+	proc exec: is done in sequential fashion
+
+Process Parts
+	*Program counter, CPU registers, proc state
+	*Text: program code
+	*Data: global variables
+	*Heap: runtime memory allocation (malloc/free)
+	*Stack: temporary data
+		Function parameters, return addr, local variables
+Process (passive): entity stored on disk
+	Program becomes proc(active) when executable file is loaded into memory
+	One single program can become several concurrent procs
+
+Process State–
+
+As a process executes it changes state (CS 147 State diagrams)
+	1. New: Process is being made
+	2. Ready: The process is waiting to be assigned to a processor
+	3. Waiting: the Process is waiting for some event to occur
+		After process are done waiting, they go back to the ready queue when they have the data they need
+	4. Running: Instructions are being executed
+		OS will add a process back to the ready queue when the process generates an interrupt or the Time Slice (allowed CPU time) has expired 
+	5. Terminated: The process has finished execution
+		
+Process Control Block (PCB)–
+
+PCB: one per process (aka task control block)
+	-Proc state: running, waiting, ready, etc
+	-PID: Unique amount all process on a given computer
+	-Program counter: next instruction to execute 
+	-Registers: contents of all proc-centric registers
+	-Scheduling: priorities, scheduling queue, pointers
+	-Memory Management: memory allocated to proc
+	-Accounting CPU used, clock time elapsed since start, time limits, 
+	-I/O status: I/O devices allocated to proc, open files  
+
+	We also need to keep track of the PCB parent and child processes. We do this if we need to do something like logging out or a shutdown operation. 
+
+Context Switch–
+
+Context Switch: CPU switches from one to another process
+	*The OS must save the state of the old proc
+	*Then the OS must load (restore) the saved state for the new proc
+	*This time is all overhead
+		The system does no useful work when switching
+		Complicated OS/PCB -> longer context switch
+	Improved Efficiency by…
+		Reduce frequency of the context switch
+		Speed up the context switch
+
+Process Scheduling–
+
+Goals: maximize CPU use, and quickly switch processes 
+Process Scheduler: selects among available proc for next execution
+	Maintains scheduling queues of proc
+
+	-Job Q: set of all pros in the system
+	-Ready Q: process in memory waiting to be executed
+	-Device Q: list of processes the devices has 
+
+Process Creation–
+
+Linux/UNIX process tree
+	*Parent process creates children processes
+	*Child processes created grandchild process, etc.
+	*PCB records parent process and children process
+	*Unique process identifier (PID) for each process
+
+Unix System Calls
+	-fork(): creates a new process - duplicate of the parent processes
+		Both the parent and the child processes are running. 
+	-exec(): replace the process memory space with a new program
+		Usually called after a fork()
+		Ex. shell(bash, csh, etc.)
+	Unlike Windows, no UNIX sys call creates a different new process
+
+

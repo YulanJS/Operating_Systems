@@ -1,0 +1,1 @@
+memalloc.d: ../memalloc.c
